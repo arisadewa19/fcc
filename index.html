@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Finance">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Financial Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0a;
+  --bg2: #111111;
+  --bg3: #1a1a1a;
+  --bg4: #222222;
+  --border: #2a2a2a;
+  --border2: #333333;
+  --text: #f0f0f0;
+  --text2: #888888;
+  --text3: #555555;
+  --green: #00c471;
+  --green2: #00a05c;
+  --green-bg: rgba(0,196,113,0.08);
+  --amber: #f59e0b;
+  --amber-bg: rgba(245,158,11,0.08);
+  --red: #ef4444;
+  --red-bg: rgba(239,68,68,0.08);
+  --blue: #3b82f6;
+  --blue-bg: rgba(59,130,246,0.08);
+  --purple: #8b5cf6;
+  --accent: #00c471;
+  --font-mono: 'Space Mono', monospace;
+  --font: 'DM Sans', sans-serif;
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* HEADER */
+.header {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 20px 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header-left .logo {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.header-left .subtitle {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 1px;
+}
+.header-right {
+  text-align: right;
+}
+.header-right .target-label {
+  font-size: 10px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.header-right .target-val {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--amber);
+  font-weight: 700;
+}
+
+/* NAV */
+.nav {
+  display: flex;
+  gap: 2px;
+  padding: 8px 12px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+  position: sticky;
+  top: 57px;
+  z-index: 99;
+}
+.nav::-webkit-scrollbar { display: none; }
+.nav-btn {
+  flex-shrink: 0;
+  padding: 7px 14px;
+  border-radius: 99px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text3);
+  font-size: 12px;
+  font-family: var(--font);
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+.nav-btn:hover { color: var(--text2); background: var(--bg3); }
+.nav-btn.active {
+  background: var(--green-bg);
+  color: var(--green);
+  border-color: rgba(0,196,113,0.3);
+}
+
+/* MAIN */
+.main { padding: 16px 16px 100px; max-width: 480px; margin: 0 auto; }
+.page { display: none; }
+.page.active { display: block; }
+
+/* CARDS */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.card-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text3);
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+/* METRIC GRID */
+.mg2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.mg4 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.metric {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+}
+.metric.hero {
+  background: linear-gradient(135deg, rgba(0,196,113,0.06) 0%, rgba(0,196,113,0.02) 100%);
+  border-color: rgba(0,196,113,0.25);
+  grid-column: 1 / -1;
+}
+.m-label {
+  font-size: 10px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+}
+.m-val {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+.m-val.big { font-size: 24px; color: var(--green); }
+.m-val.green { color: var(--green); }
+.m-val.amber { color: var(--amber); }
+.m-val.red { color: var(--red); }
+.m-val.blue { color: var(--blue); }
+.m-sub { font-size: 10px; color: var(--text3); margin-top: 3px; }
+
+/* PROGRESS */
+.prog-wrap { margin: 4px 0 14px; }
+.prog-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--text2); margin-bottom: 6px; }
+.prog-track {
+  height: 6px;
+  background: var(--bg4);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.prog-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.6s cubic-bezier(.4,0,.2,1);
+}
+.prog-note { font-size: 10px; color: var(--text3); margin-top: 4px; }
+
+/* ALLOC BARS */
+.alloc-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+.alloc-label { font-size: 11px; color: var(--text2); min-width: 110px; }
+.alloc-track {
+  flex: 1;
+  height: 16px;
+  background: var(--bg4);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.alloc-bar {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+  border-radius: 4px;
+  transition: width 0.6s;
+}
+.alloc-bar span { font-size: 10px; color: rgba(255,255,255,0.85); font-weight: 600; white-space: nowrap; }
+.alloc-pct { font-size: 10px; color: var(--text3); min-width: 28px; text-align: right; font-family: var(--font-mono); }
+
+/* TRACKING */
+.month-row { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin-bottom: 14px; }
+.month-row::-webkit-scrollbar { display: none; }
+.mbtn {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  border-radius: 99px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text3);
+  font-size: 11px;
+  font-family: var(--font);
+  cursor: pointer;
+}
+.mbtn.active { background: var(--blue-bg); color: var(--blue); border-color: rgba(59,130,246,0.3); }
+
+.sum-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 12px; }
+.sum-pill { background: var(--bg3); border-radius: var(--radius-sm); padding: 10px; border: 1px solid var(--border); }
+.sp-label { font-size: 9px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 3px; }
+.sp-val { font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
+
+/* FORM */
+.form-group { margin-bottom: 10px; }
+.form-label { font-size: 11px; color: var(--text2); margin-bottom: 5px; display: block; font-weight: 500; }
+select, input[type=text], input[type=number] {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  padding: 11px 13px;
+  font-size: 14px;
+  color: var(--text);
+  font-family: var(--font);
+  appearance: none;
+  -webkit-appearance: none;
+}
+select:focus, input:focus { outline: none; border-color: rgba(0,196,113,0.5); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+.btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--green);
+  color: #000;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: opacity 0.2s;
+  letter-spacing: 0.3px;
+  margin-top: 4px;
+}
+.btn:active { opacity: 0.85; }
+.btn.sec {
+  background: var(--bg3);
+  color: var(--text2);
+  border: 1px solid var(--border2);
+}
+.btn.danger {
+  background: var(--red-bg);
+  color: var(--red);
+  border: 1px solid rgba(239,68,68,0.3);
+}
+.btn-row { display: flex; gap: 8px; margin-top: 8px; }
+.btn-row .btn { margin-top: 0; }
+
+/* ENTRY LIST */
+.entry-list {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin: 10px 0;
+}
+.entry-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 13px;
+  border-bottom: 1px solid var(--border);
+}
+.entry-item:last-child { border-bottom: none; }
+.ei-cat { font-size: 13px; font-weight: 500; color: var(--text); }
+.ei-note { font-size: 10px; color: var(--text3); margin-top: 1px; }
+.ei-amt { font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
+.ei-del { color: var(--red); font-size: 18px; cursor: pointer; padding: 0 4px; line-height: 1; }
+.empty-state { text-align: center; padding: 32px 16px; color: var(--text3); font-size: 13px; }
+
+/* BALANCE SHEET */
+.bs-section { margin-bottom: 16px; }
+.bs-section-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text3);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.bs-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.bs-row:last-child { border-bottom: none; }
+.bs-row.indent { padding-left: 20px; color: var(--text2); }
+.bs-row.total {
+  font-weight: 700;
+  background: var(--bg3);
+  border-radius: var(--radius-sm);
+  margin-top: 6px;
+  border: none;
+  padding: 10px 12px;
+}
+.bs-row.networth {
+  background: linear-gradient(135deg, rgba(0,196,113,0.1), rgba(0,196,113,0.04));
+  border: 1px solid rgba(0,196,113,0.3);
+  border-radius: var(--radius-sm);
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 14px 14px;
+}
+.tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+.tbl th { font-size: 10px; color: var(--text3); text-align: left; padding: 8px; border-bottom: 1px solid var(--border); text-transform: uppercase; letter-spacing: 0.8px; }
+.tbl td { padding: 9px 8px; border-bottom: 1px solid var(--border); color: var(--text); }
+.tbl tr:last-child td { border-bottom: none; }
+
+/* MILESTONE */
+.ms-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.ms-item:last-child { border-bottom: none; }
+.ms-dot-col { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.ms-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.ms-line { width: 1px; background: var(--border); flex: 1; min-height: 20px; }
+.ms-period { font-size: 10px; color: var(--text3); min-width: 70px; margin-top: 0px; line-height: 1.4; }
+.ms-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.ms-desc { font-size: 11px; color: var(--text3); line-height: 1.5; margin-bottom: 6px; }
+.ms-prog { height: 3px; background: var(--bg4); border-radius: 99px; overflow: hidden; }
+.ms-prog-fill { height: 100%; border-radius: 99px; }
+.ms-target { font-size: 11px; font-weight: 700; font-family: var(--font-mono); margin-left: auto; white-space: nowrap; padding-left: 8px; padding-top: 1px; }
+
+/* SETTINGS */
+.section-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 16px 0;
+}
+.info-box {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.info-box p { font-size: 12px; color: var(--text2); line-height: 1.6; margin-bottom: 8px; }
+.info-box p:last-child { margin-bottom: 0; }
+.info-box strong { color: var(--text); }
+.code-box {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--green);
+  line-height: 1.7;
+  overflow-x: auto;
+  white-space: pre;
+  margin: 8px 0;
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--green);
+  color: #000;
+  padding: 10px 20px;
+  border-radius: 99px;
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0;
+  transition: all 0.3s;
+  z-index: 999;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* BOTTOM NAV */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(10,10,10,0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  padding: 8px 0 env(safe-area-inset-bottom, 8px);
+  z-index: 100;
+}
+.bnav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text3);
+  font-family: var(--font);
+  transition: color 0.2s;
+}
+.bnav-btn.active { color: var(--green); }
+.bnav-icon { font-size: 20px; line-height: 1; }
+.bnav-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* BADGE */
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-weight: 700;
+}
+.b-green { background: var(--green-bg); color: var(--green); border: 1px solid rgba(0,196,113,0.2); }
+.b-amber { background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
+.b-red { background: var(--red-bg); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+.b-blue { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(59,130,246,0.2); }
+
+/* INSTALL BANNER */
+.install-banner {
+  background: linear-gradient(135deg, #00c471, #00a05c);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  display: none;
+}
+.install-banner.show { display: flex; }
+.install-text { font-size: 13px; font-weight: 600; color: #000; }
+.install-sub { font-size: 11px; color: rgba(0,0,0,0.6); margin-top: 1px; }
+.install-btn {
+  background: rgba(0,0,0,0.15);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font);
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo">FCC</div>
+    <div class="subtitle" id="h-date">—</div>
+  </div>
+  <div class="header-right">
+    <div class="target-label">Target</div>
+    <div class="target-val">Rp 10 M</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- PAGES -->
+<div class="main">
+
+<!-- INSTALL BANNER -->
+<div class="install-banner" id="install-banner">
+  <div>
+    <div class="install-text">Install di HP Anda</div>
+    <div class="install-sub">Akses seperti aplikasi</div>
+  </div>
+  <button class="install-btn" onclick="installPWA()">Install</button>
+</div>
+
+<!-- PAGE: OVERVIEW -->
+<div class="page active" id="page-overview">
+  <div class="mg4">
+    <div class="metric hero">
+      <div class="m-label">Net Worth Total</div>
+      <div class="m-val big" id="ov-nw">—</div>
+      <div class="m-sub">Termasuk properti & prepaid sewa</div>
+    </div>
+    <div class="metric">
+      <div class="m-label">Investasi Likuid</div>
+      <div class="m-val green" id="ov-inv">—</div>
+    </div>
+    <div class="metric">
+      <div class="m-label">Surplus/Bulan</div>
+      <div class="m-val" id="ov-sur">—</div>
+    </div>
+  </div>
+
+  <div class="prog-wrap">
+    <div class="prog-row"><span>Progress ke Rp 10 Miliar</span><span id="ov-pct" style="font-family:var(--font-mono);color:var(--green)">—</span></div>
+    <div class="prog-track"><div class="prog-fill" id="ov-fill" style="width:0%;background:var(--green)"></div></div>
+    <div class="prog-note">Gap: <span id="ov-gap">—</span> · Surplus target: <span id="ov-surtarget">Rp 16,3 jt/bln</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Alokasi Aset</div>
+    <div id="ov-alloc"><div class="empty-state">Belum ada data. Buka tab Pengaturan.</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Bulan Ini — <span id="ov-month-label">—</span></div>
+    <div id="ov-month-summary"></div>
+  </div>
+</div>
+
+<!-- PAGE: TRACKING -->
+<div class="page" id="page-tracking">
+  <div class="month-row" id="month-tabs"></div>
+
+  <div class="sum-row">
+    <div class="sum-pill"><div class="sp-label">Masuk</div><div class="sp-val" id="t-inc" style="color:var(--green)">0</div></div>
+    <div class="sum-pill"><div class="sp-label">Keluar</div><div class="sp-val" id="t-exp" style="color:var(--red)">0</div></div>
+    <div class="sum-pill"><div class="sp-label">Surplus</div><div class="sp-val" id="t-bal">0</div></div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-row"><span>Surplus vs target 16,3 jt</span><span id="t-pct" style="font-family:var(--font-mono)">0%</span></div>
+    <div class="prog-track"><div class="prog-fill" id="t-fill" style="width:0%"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Catat Transaksi</div>
+    <div class="form-group">
+      <label class="form-label">Jenis</label>
+      <select id="tx-type">
+        <option value="income">➕ Pemasukan</option>
+        <option value="expense">➖ Pengeluaran</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Kategori</label>
+      <select id="tx-cat">
+        <optgroup label="— Pemasukan —">
+          <option>Gaji</option><option>Sewa properti</option>
+          <option>Side income konsultasi</option><option>Side income workshop</option>
+          <option>Side income kelas online</option><option>Dividen/investasi</option>
+          <option>Pemasukan lainnya</option>
+        </optgroup>
+        <optgroup label="— Pengeluaran Tetap —">
+          <option>Orang tua</option><option>Syafana (anak)</option>
+          <option>ART</option><option>Listrik</option><option>Air</option>
+          <option>IPL Icon</option><option>IPL The River</option>
+          <option>BaliFiber</option><option>Vitamin anak</option>
+          <option>Bensin</option><option>Rockstar (les anak)</option>
+        </optgroup>
+        <optgroup label="— Pengeluaran Variabel —">
+          <option>Makan</option><option>Jajan suami</option><option>Jajan istri</option>
+          <option>Belanja rumah</option><option>Hiburan</option><option>Kesehatan</option>
+          <option>Investasi DCA RD Saham</option><option>Dana properti ke-2</option>
+          <option>Sertifikasi/tools</option><option>Pengeluaran lainnya</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Jumlah (Rp)</label>
+        <input type="number" id="tx-amount" placeholder="5000000" inputmode="numeric">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Keterangan</label>
+        <input type="text" id="tx-note" placeholder="Opsional">
+      </div>
+    </div>
+    <button class="btn" onclick="addTx()">+ Catat Transaksi</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Transaksi Bulan Ini</div>
+    <div id="entry-list"><div class="empty-state">Belum ada transaksi</div></div>
+    <div class="btn-row" style="margin-top:12px">
+      <button class="btn sec" onclick="loadDefaults()" style="font-size:12px">Isi rutin</button>
+      <button class="btn danger" onclick="clearMonth()" style="font-size:12px">Hapus semua</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: NERACA -->
+<div class="page" id="page-neraca">
+  <div class="card">
+    <div class="card-title">Neraca Hidup — <span id="bs-date">—</span></div>
+    <div class="bs-section" id="bs-aset"></div>
+    <div style="height:12px"></div>
+    <div class="bs-section" id="bs-liab"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Histori Net Worth</div>
+    <div id="bs-hist"></div>
+  </div>
+</div>
+
+<!-- PAGE: MILESTONE -->
+<div class="page" id="page-milestone">
+  <div class="card">
+    <div class="card-title">Perjalanan Menuju Rp 10 Miliar</div>
+    <div id="ms-list"></div>
+  </div>
+</div>
+
+<!-- PAGE: PENGATURAN -->
+<div class="page" id="page-settings">
+  <div class="card">
+    <div class="card-title">Update Portofolio Bulanan</div>
+    <div class="form-grid">
+      <div class="form-group"><label class="form-label">Emas fisik (Rp)</label><input type="number" id="s-emas" inputmode="numeric" placeholder="339500000"></div>
+      <div class="form-group"><label class="form-label">RD Obligasi</label><input type="number" id="s-rdob" inputmode="numeric" placeholder="460000000"></div>
+      <div class="form-group"><label class="form-label">RD Saham</label><input type="number" id="s-rds" inputmode="numeric" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">RD Pasar Uang</label><input type="number" id="s-rdpm" inputmode="numeric" placeholder="58000000"></div>
+      <div class="form-group"><label class="form-label">Saham INDF</label><input type="number" id="s-indf" inputmode="numeric" placeholder="27800000"></div>
+      <div class="form-group"><label class="form-label">Saham BBCA</label><input type="number" id="s-bbca" inputmode="numeric" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">Saham BBRI</label><input type="number" id="s-bbri" inputmode="numeric" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">Saham BBNI</label><input type="number" id="s-bbni" inputmode="numeric" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">Properti 1</label><input type="number" id="s-p1" inputmode="numeric" placeholder="600000000"></div>
+      <div class="form-group"><label class="form-label">Properti 2</label><input type="number" id="s-p2" inputmode="numeric" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">Cash</label><input type="number" id="s-cash" inputmode="numeric" placeholder="100000000"></div>
+      <div class="form-group"><label class="form-label">Prepaid sewa</label><input type="number" id="s-pre" inputmode="numeric" placeholder="80000000"></div>
+      <div class="form-group"><label class="form-label">Hutang/KPR</label><input type="number" id="s-hutang" inputmode="numeric" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">Gaji bulanan</label><input type="number" id="s-gaji" inputmode="numeric" placeholder="37000000"></div>
+    </div>
+    <button class="btn" onclick="saveSettings()">💾 Simpan & Update</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Cara Install di HP</div>
+    <div class="info-box">
+      <p><strong>iPhone (Safari):</strong><br>
+      Buka website ini di Safari → tap ikon Share (kotak dengan panah) → pilih "Add to Home Screen" → tap "Add"</p>
+      <p><strong>Android (Chrome):</strong><br>
+      Buka website ini di Chrome → tap menu titik tiga (⋮) → pilih "Add to Home Screen" atau akan muncul banner install otomatis</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Link Dashboard</div>
+    <div class="info-box">
+      <p>Setelah deploy ke GitHub Pages, link Anda akan menjadi:<br>
+      <strong>https://[username].github.io/fcc</strong></p>
+      <p>Simpan link ini di WhatsApp catatan sendiri atau bookmark browser HP untuk akses cepat kapanpun.</p>
+    </div>
+    <div style="margin-top:8px">
+      <button class="btn sec" onclick="copyLink()" style="font-size:13px">📋 Salin Link Halaman Ini</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Backup Data</div>
+    <div id="backup-text" class="code-box" style="font-size:10px;max-height:100px;overflow-y:auto">—</div>
+    <div class="btn-row">
+      <button class="btn sec" onclick="copyBackup()" style="font-size:12px">📋 Salin backup</button>
+      <button class="btn sec" onclick="restorePrompt()" style="font-size:12px">📥 Restore</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="bnav-btn active" onclick="gotoPage('overview',this)">
+    <span class="bnav-icon">📊</span>
+    <span class="bnav-label">Overview</span>
+  </button>
+  <button class="bnav-btn" onclick="gotoPage('tracking',this)">
+    <span class="bnav-icon">✏️</span>
+    <span class="bnav-label">Tracking</span>
+  </button>
+  <button class="bnav-btn" onclick="gotoPage('neraca',this)">
+    <span class="bnav-icon">⚖️</span>
+    <span class="bnav-label">Neraca</span>
+  </button>
+  <button class="bnav-btn" onclick="gotoPage('milestone',this)">
+    <span class="bnav-icon">🎯</span>
+    <span class="bnav-label">Target</span>
+  </button>
+  <button class="bnav-btn" onclick="gotoPage('settings',this)">
+    <span class="bnav-icon">⚙️</span>
+    <span class="bnav-label">Atur</span>
+  </button>
+</div>
+
+<script>
+// ─── STORAGE ───────────────────────────────────────────────────────────────
+const SK='fcc_pwa_v1';
+function load(){try{return JSON.parse(localStorage.getItem(SK)||'{}')}catch(e){return{}}}
+function save(d){try{localStorage.setItem(SK,JSON.stringify(d))}catch(e){}}
+let DB=load();
+let CM=curMonth();
+
+function curMonth(){
+  const d=new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+}
+function fmtM(m){
+  const[y,mo]=m.split('-');
+  const n=['','Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agt','Sep','Okt','Nov','Des'];
+  return n[parseInt(mo)]+' '+y;
+}
+function fmt(n){
+  const a=Math.abs(Math.round(n));
+  if(a>=1e9)return'Rp '+(a/1e9).toFixed(2)+' M';
+  if(a>=1e6)return'Rp '+(a/1e6).toFixed(1)+' jt';
+  if(a>=1e3)return'Rp '+(a/1e3).toFixed(0)+' rb';
+  return'Rp '+a;
+}
+function fmtFull(n){
+  return'Rp '+Math.abs(Math.round(n)).toLocaleString('id-ID');
+}
+
+// ─── PORTFOLIO ─────────────────────────────────────────────────────────────
+function getP(){
+  const p=DB.p||{};
+  return{
+    emas:p.emas||339500000,rdob:p.rdob||460000000,
+    rds:p.rds||0,rdpm:p.rdpm||58000000,
+    indf:p.indf||27800000,bbca:p.bbca||0,
+    bbri:p.bbri||0,bbni:p.bbni||0,
+    p1:p.p1||600000000,p2:p.p2||0,
+    cash:p.cash||100000000,pre:p.pre||80000000,
+    hutang:p.hutang||0,gaji:p.gaji||37000000
+  };
+}
+function getNW(p){
+  return p.emas+p.rdob+p.rds+p.rdpm+p.indf+p.bbca+p.bbri+p.bbni+p.p1+p.p2+p.cash+p.pre-p.hutang;
+}
+function getInv(p){
+  return p.emas+p.rdob+p.rds+p.rdpm+p.indf+p.bbca+p.bbri+p.bbni;
+}
+function getTx(m){return(DB.tx||{})[m]||[]}
+function getMS(m){
+  const t=getTx(m);let i=0,e=0;
+  t.forEach(x=>{if(x.t==='income')i+=x.a;else e+=x.a});
+  return{i,e,b:i-e};
+}
+
+// ─── NAV ───────────────────────────────────────────────────────────────────
+function gotoPage(name,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+  if(name==='neraca')renderNeraca();
+  if(name==='milestone')renderMilestone();
+  if(name==='settings'){fillSettings();renderBackup();}
+}
+
+// ─── OVERVIEW ──────────────────────────────────────────────────────────────
+function renderOverview(){
+  const p=getP(),nw=getNW(p),inv=getInv(p),tgt=10000000000;
+  const ms=getMS(CM);
+  const sur=ms.b||(p.gaji+2500000-23157000);
+
+  document.getElementById('h-date').textContent=new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('ov-nw').textContent=fmt(nw);
+  document.getElementById('ov-inv').textContent=fmt(inv);
+  const surEl=document.getElementById('ov-sur');
+  surEl.textContent=(sur>=0?'+':'')+fmt(sur);
+  surEl.className='m-val '+(sur>=0?'green':'red');
+  document.getElementById('ov-month-label').textContent=fmtM(CM);
+
+  const pct=Math.min(100,nw/tgt*100);
+  document.getElementById('ov-pct').textContent=pct.toFixed(1)+'%';
+  document.getElementById('ov-fill').style.width=pct+'%';
+  document.getElementById('ov-gap').textContent=fmt(tgt-nw);
+
+  // alloc
+  const items=[
+    {l:'Properti',v:p.p1+p.p2,c:'#8b5cf6'},
+    {l:'RD Obligasi',v:p.rdob,c:'#3b82f6'},
+    {l:'Emas fisik',v:p.emas,c:'#f59e0b'},
+    {l:'RD Saham',v:p.rds,c:'#00c471'},
+    {l:'Cash & prepaid',v:p.cash+p.pre,c:'#6b7280'},
+    {l:'Saham',v:p.indf+p.bbca+p.bbri+p.bbni,c:'#ef4444'},
+    {l:'RD Pasar Uang',v:p.rdpm,c:'#06b6d4'},
+  ].filter(x=>x.v>0);
+
+  document.getElementById('ov-alloc').innerHTML=items.map(it=>{
+    const pc=Math.round(it.v/nw*100);
+    return`<div class="alloc-item">
+      <div class="alloc-label">${it.l}</div>
+      <div class="alloc-track">
+        <div class="alloc-bar" style="width:${pc}%;background:${it.c}">
+          ${pc>10?`<span>${fmt(it.v)}</span>`:''}
+        </div>
+      </div>
+      <div class="alloc-pct">${pc}%</div>
+    </div>`;
+  }).join('');
+
+  // month summary
+  const s=getMS(CM);
+  if(s.i>0){
+    const srPct=Math.min(100,Math.max(0,Math.round(s.b/16343000*100)));
+    document.getElementById('ov-month-summary').innerHTML=`
+      <div class="sum-row" style="margin-bottom:10px">
+        <div class="sum-pill"><div class="sp-label">Pemasukan</div><div class="sp-val" style="color:var(--green)">${fmt(s.i)}</div></div>
+        <div class="sum-pill"><div class="sp-label">Pengeluaran</div><div class="sp-val" style="color:var(--red)">${fmt(s.e)}</div></div>
+        <div class="sum-pill"><div class="sp-label">Surplus</div><div class="sp-val" style="color:${s.b>=0?'var(--green)':'var(--red)'}">${s.b>=0?'+':''}${fmt(s.b)}</div></div>
+      </div>
+      <div class="prog-wrap" style="margin:0">
+        <div class="prog-row"><span>Surplus vs target 16,3 jt</span><span style="font-family:var(--font-mono);color:${srPct>=100?'var(--green)':srPct>=60?'var(--amber)':'var(--red)'}">${srPct}%</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:${srPct}%;background:${srPct>=100?'var(--green)':srPct>=60?'var(--amber)':'var(--red)'}"></div></div>
+      </div>`;
+  }else{
+    document.getElementById('ov-month-summary').innerHTML=`<div class="empty-state">Belum ada data. Buka Tracking → Isi rutin.</div>`;
+  }
+}
+
+// ─── TRACKING ──────────────────────────────────────────────────────────────
+function renderTracking(){
+  const txData=DB.tx||{};
+  const months=Object.keys(txData).filter(m=>txData[m]&&txData[m].length>0);
+  if(!months.includes(CM))months.push(CM);
+  months.sort().reverse();
+  document.getElementById('month-tabs').innerHTML=months.map(m=>
+    `<button class="mbtn${m===CM?' active':''}" onclick="switchM('${m}')">${fmtM(m)}</button>`
+  ).join('');
+
+  const txs=getTx(CM);
+  let i=0,e=0;txs.forEach(t=>{if(t.t==='income')i+=t.a;else e+=t.a});
+  const b=i-e,tgt=16343000;
+  const pp=Math.min(100,Math.max(0,Math.round(b/tgt*100)));
+  document.getElementById('t-inc').textContent=fmt(i);
+  document.getElementById('t-exp').textContent=fmt(e);
+  const bEl=document.getElementById('t-bal');
+  bEl.textContent=(b>=0?'+':'')+fmt(b);
+  bEl.style.color=b>=0?'var(--green)':'var(--red)';
+  document.getElementById('t-pct').textContent=pp+'%';
+  document.getElementById('t-pct').style.color=pp>=100?'var(--green)':pp>=60?'var(--amber)':'var(--red)';
+  const pf=document.getElementById('t-fill');
+  pf.style.width=pp+'%';
+  pf.style.background=pp>=100?'var(--green)':pp>=60?'var(--amber)':'var(--red)';
+
+  const list=document.getElementById('entry-list');
+  if(!txs.length){list.innerHTML=`<div class="empty-state">Belum ada transaksi ${fmtM(CM)}</div>`;return}
+  list.innerHTML=txs.map((t,idx)=>`
+    <div class="entry-item">
+      <div>
+        <div class="ei-cat">${t.c}</div>
+        <div class="ei-note">${t.n||''}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="ei-amt" style="color:${t.t==='income'?'var(--green)':'var(--red)'}">${t.t==='income'?'+':'-'}${fmt(t.a)}</div>
+        <div class="ei-del" onclick="delTx(${idx})">×</div>
+      </div>
+    </div>`).join('');
+}
+
+function switchM(m){CM=m;renderTracking();renderOverview();}
+
+function addTx(){
+  const ty=document.getElementById('tx-type').value;
+  const ca=document.getElementById('tx-cat').value;
+  const no=document.getElementById('tx-note').value.trim();
+  const am=parseInt(document.getElementById('tx-amount').value);
+  if(!am||am<=0){showToast('Masukkan jumlah yang valid','red');return}
+  if(!DB.tx)DB.tx={};if(!DB.tx[CM])DB.tx[CM]=[];
+  DB.tx[CM].push({t:ty,c:ca,n:no,a:am});
+  save(DB);
+  document.getElementById('tx-amount').value='';
+  document.getElementById('tx-note').value='';
+  renderTracking();renderOverview();
+  showToast('Tercatat: '+(ty==='income'?'+':'-')+fmt(am));
+}
+
+function delTx(i){
+  if(!confirm('Hapus transaksi ini?'))return;
+  DB.tx[CM].splice(i,1);save(DB);renderTracking();renderOverview();
+}
+
+function clearMonth(){
+  if(!confirm('Hapus semua transaksi '+fmtM(CM)+'?'))return;
+  DB.tx[CM]=[];save(DB);renderTracking();renderOverview();
+}
+
+const DEF=[
+  {t:'income',c:'Gaji',n:'',a:37000000},
+  {t:'income',c:'Sewa properti',n:'Rp 15jt ÷ 6 bln',a:2500000},
+  {t:'expense',c:'Orang tua',n:'',a:3000000},
+  {t:'expense',c:'Syafana (anak)',n:'',a:1750000},
+  {t:'expense',c:'ART',n:'',a:2300000},
+  {t:'expense',c:'Listrik',n:'',a:500000},
+  {t:'expense',c:'Air',n:'',a:165000},
+  {t:'expense',c:'IPL Icon',n:'',a:367000},
+  {t:'expense',c:'IPL The River',n:'',a:225000},
+  {t:'expense',c:'BaliFiber',n:'',a:300000},
+  {t:'expense',c:'Vitamin anak',n:'',a:800000},
+  {t:'expense',c:'Makan',n:'',a:3000000},
+  {t:'expense',c:'Jajan suami',n:'',a:4000000},
+  {t:'expense',c:'Jajan istri',n:'',a:4000000},
+  {t:'expense',c:'Bensin',n:'',a:1000000},
+  {t:'expense',c:'Rockstar (les anak)',n:'',a:1750000},
+];
+function loadDefaults(){
+  if(!DB.tx)DB.tx={};if(!DB.tx[CM])DB.tx[CM]=[];
+  if(DB.tx[CM].length>0&&!confirm('Tambahkan pengeluaran rutin ke yang sudah ada?'))return;
+  DB.tx[CM].push(...DEF.map(d=>({...d})));
+  save(DB);renderTracking();renderOverview();showToast('Pengeluaran rutin ditambahkan');
+}
+
+// ─── NERACA ────────────────────────────────────────────────────────────────
+function renderNeraca(){
+  const p=getP(),nw=getNW(p);
+  document.getElementById('bs-date').textContent=new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+
+  const asetRows=[
+    {h:'Investasi'},
+    {l:'Emas fisik (115 gr)',v:p.emas},
+    {l:'RD Obligasi',v:p.rdob},
+    p.rds>0&&{l:'RD Saham',v:p.rds},
+    {l:'RD Pasar Uang',v:p.rdpm},
+    p.indf>0&&{l:'Saham INDF',v:p.indf},
+    p.bbca>0&&{l:'Saham BBCA',v:p.bbca},
+    p.bbri>0&&{l:'Saham BBRI',v:p.bbri},
+    p.bbni>0&&{l:'Saham BBNI',v:p.bbni},
+    {h:'Properti'},
+    {l:'Properti 1',v:p.p1},
+    p.p2>0&&{l:'Properti 2',v:p.p2},
+    {h:'Kas & Prepaid'},
+    {l:'Cash rekening',v:p.cash},
+    p.pre>0&&{l:'Prepaid sewa tersisa',v:p.pre},
+  ].filter(Boolean);
+
+  const total=p.emas+p.rdob+p.rds+p.rdpm+p.indf+p.bbca+p.bbri+p.bbni+p.p1+p.p2+p.cash+p.pre;
+
+  document.getElementById('bs-aset').innerHTML=
+    `<div class="bs-section-title">ASET</div>`+
+    asetRows.map(r=>r.h
+      ?`<div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:8px 0 4px;font-weight:600">${r.h}</div>`
+      :`<div class="bs-row indent"><span>${r.l}</span><span style="color:var(--green);font-family:var(--font-mono)">${fmt(r.v)}</span></div>`
+    ).join('')+
+    `<div class="bs-row total"><span>Total Aset</span><span style="color:var(--green);font-family:var(--font-mono)">${fmt(total)}</span></div>`;
+
+  document.getElementById('bs-liab').innerHTML=
+    `<div class="bs-section-title">KEWAJIBAN</div>
+    <div class="bs-row indent"><span>Hutang / KPR</span><span style="font-family:var(--font-mono);color:${p.hutang>0?'var(--red)':'var(--text3)'}">${p.hutang>0?fmt(p.hutang):'Rp 0'}</span></div>
+    <div class="bs-row total"><span>Total Kewajiban</span><span style="font-family:var(--font-mono);color:${p.hutang>0?'var(--red)':'var(--text3)'}">${fmt(p.hutang)}</span></div>
+    <div class="bs-row networth"><span>NET WORTH</span><span style="color:var(--green);font-family:var(--font-mono)">${fmt(nw)}</span></div>
+    <div class="prog-wrap" style="margin-top:12px;margin-bottom:0">
+      <div class="prog-row"><span>${fmt(nw)} dari Rp 10 M</span><span style="font-family:var(--font-mono);color:var(--green)">${(nw/1e10*100).toFixed(1)}%</span></div>
+      <div class="prog-track"><div class="prog-fill" style="width:${Math.min(100,nw/1e10*100)}%;background:var(--green)"></div></div>
+    </div>`;
+
+  const hist=DB.hist||[];
+  document.getElementById('bs-hist').innerHTML=hist.length===0
+    ?`<div class="empty-state">Histori tersimpan setiap kali Anda update portofolio.</div>`
+    :`<table class="tbl"><thead><tr><th>Tanggal</th><th>Net Worth</th><th>Δ</th></tr></thead><tbody>${
+      hist.slice().reverse().map((h,i,a)=>{
+        const prev=a[i+1];const d=prev?h.nw-prev.nw:null;
+        return`<tr><td>${h.date}</td><td style="color:var(--green);font-family:var(--font-mono)">${fmt(h.nw)}</td>
+          <td style="font-family:var(--font-mono);color:${d===null?'var(--text3)':d>=0?'var(--green)':'var(--red)'}">${d===null?'—':((d>=0?'+':'')+fmt(d))}</td></tr>`;
+      }).join('')}</tbody></table>`;
+}
+
+// ─── MILESTONE ─────────────────────────────────────────────────────────────
+function renderMilestone(){
+  const p=getP(),nw=getNW(p);
+  const ms=[
+    {period:'Apr–Mei 2026',title:'Rebalancing + Konsultasi Pertama',desc:'Redeem RD Obligasi, DCA RD Saham, update LinkedIn, klien pertama',target:1700000000,c:'#00c471'},
+    {period:'Jun–Jul 2026',title:'Workshop Data + PL-300',desc:'20 peserta, ujian PL-300, 2 klien aktif',target:1900000000,c:'#00c471'},
+    {period:'Agt 2026',title:'Renegotiasi Sewa Properti',desc:'Naikkan ke Rp 30–32 jt/tahun saat kontrak habis',target:2000000000,c:'#f59e0b'},
+    {period:'Sep–Nov 2026',title:'Kelas Online + Hunting Properti ke-2',desc:'Dana DP Rp 120 jt siap, survey lokasi',target:2200000000,c:'#f59e0b'},
+    {period:'Jan–Mar 2027',title:'Akuisisi Properti ke-2',desc:'KPR properti ke-2, retainer klien Rp 5–10 jt/bln',target:2500000000,c:'#3b82f6'},
+    {period:'Agt 2027',title:'Kontrak Sewa Habis',desc:'Evaluasi hunian — sewa lebih murah, hemat cashflow',target:3000000000,c:'#3b82f6'},
+    {period:'2028',title:'Compound Effect Aktif',desc:'2 properti apresiasi, investasi tumbuh, kelas passive income',target:5000000000,c:'#8b5cf6'},
+    {period:'2029–2031',title:'Menuju Finish Line',desc:'4+ tahun semua pilar bekerja bersama',target:7000000000,c:'#8b5cf6'},
+    {period:'2030–2032',title:'🎯 TARGET: Rp 10 Miliar',desc:'Beli rumah hunian impian secara cash. Freedom.',target:10000000000,c:'#f59e0b'},
+  ];
+  document.getElementById('ms-list').innerHTML=ms.map((m,idx)=>{
+    const done=nw>=m.target;
+    const pct=Math.min(100,Math.round(nw/m.target*100));
+    const isLast=idx===ms.length-1;
+    return`<div class="ms-item">
+      <div class="ms-dot-col">
+        <div class="ms-dot" style="background:${done?'var(--green)':m.c};${done?'':'opacity:0.4'}"></div>
+        ${!isLast?`<div class="ms-line"></div>`:''}
+      </div>
+      <div style="flex:1">
+        <div class="ms-period">${m.period}</div>
+        <div class="ms-title" style="color:${done?'var(--green)':'var(--text)'}">${done?'✓ ':''}${m.title}</div>
+        <div class="ms-desc">${m.desc}</div>
+        <div class="ms-prog"><div class="ms-prog-fill" style="width:${pct}%;background:${done?'var(--green)':m.c}"></div></div>
+      </div>
+      <div class="ms-target" style="color:${done?'var(--green)':m.c}">${fmt(m.target)}</div>
+    </div>`;
+  }).join('');
+}
+
+// ─── SETTINGS ──────────────────────────────────────────────────────────────
+function fillSettings(){
+  const p=getP();
+  const keys=['emas','rdob','rds','rdpm','indf','bbca','bbri','bbni','p1','p2','cash','pre','hutang','gaji'];
+  keys.forEach(k=>{const el=document.getElementById('s-'+k);if(el&&p[k])el.value=p[k];});
+}
+
+function saveSettings(){
+  const g=k=>{const el=document.getElementById('s-'+k);return el?parseInt(el.value)||0:0};
+  DB.p={
+    emas:g('emas'),rdob:g('rdob'),rds:g('rds'),rdpm:g('rdpm'),
+    indf:g('indf'),bbca:g('bbca'),bbri:g('bbri'),bbni:g('bbni'),
+    p1:g('p1'),p2:g('p2'),cash:g('cash'),pre:g('pre'),
+    hutang:g('hutang'),gaji:g('gaji')
+  };
+  const nw=getNW(DB.p);
+  if(!DB.hist)DB.hist=[];
+  const today=new Date().toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
+  const last=DB.hist[DB.hist.length-1];
+  if(!last||last.nw!==nw)DB.hist.push({date:today,nw});
+  if(DB.hist.length>24)DB.hist=DB.hist.slice(-24);
+  save(DB);
+  renderOverview();
+  renderBackup();
+  showToast('Data tersimpan! Net Worth: '+fmt(nw));
+}
+
+function renderBackup(){
+  const el=document.getElementById('backup-text');
+  if(el)el.textContent=JSON.stringify(DB,null,2);
+}
+
+function copyBackup(){
+  const el=document.getElementById('backup-text');
+  if(!el)return;
+  navigator.clipboard.writeText(el.textContent).then(()=>showToast('Backup disalin!'));
+}
+
+function restorePrompt(){
+  const data=prompt('Paste data backup JSON di sini:');
+  if(!data)return;
+  try{
+    DB=JSON.parse(data);save(DB);
+    renderOverview();renderTracking();renderBackup();
+    showToast('Data berhasil di-restore!');
+  }catch(e){showToast('Format tidak valid','red');}
+}
+
+function copyLink(){
+  navigator.clipboard.writeText(window.location.href).then(()=>showToast('Link disalin!'));
+}
+
+// ─── TOAST ─────────────────────────────────────────────────────────────────
+function showToast(msg,type='green'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.background=type==='red'?'var(--red)':'var(--green)';
+  t.style.color=type==='red'?'#fff':'#000';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ─── PWA INSTALL ───────────────────────────────────────────────────────────
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();deferredPrompt=e;
+  document.getElementById('install-banner').classList.add('show');
+});
+function installPWA(){
+  if(!deferredPrompt)return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(r=>{
+    document.getElementById('install-banner').classList.remove('show');
+    deferredPrompt=null;
+    if(r.outcome==='accepted')showToast('Berhasil diinstall!');
+  });
+}
+
+// ─── SERVICE WORKER ────────────────────────────────────────────────────────
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+
+// ─── INIT ──────────────────────────────────────────────────────────────────
+DB=load();
+renderOverview();
+renderTracking();
+</script>
+</body>
+</html>
